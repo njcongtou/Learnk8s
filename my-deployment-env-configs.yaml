@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hellok8s-svc
+spec:
+  type: NodePort
+  selector:
+    app: hellok8s
+  ports:
+  - port: 30001
+    targetPort: 8081
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellok8s
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hellok8s
+  template:
+    metadata:
+      labels:
+        app: hellok8s
+    spec:
+      containers:
+      - image: jimwallet/my-go-app:v5
+        name: hellok8s-container
+        # This is embedded env variables
+        env:
+          - name: MESSAGE
+            valueFrom:
+              configMapKeyRef:
+                name: hellok8s-config
+                key: MESSAGE

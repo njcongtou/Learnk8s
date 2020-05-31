@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  annotations:
+    # We are defining this annotation to prevent nginx
+    # from redirecting requests to `https` for now
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-svc
+          servicePort: 1234
+      - path: /hello
+        backend:
+            serviceName: hellok8s-svc
+            servicePort: 8081 # 注意这个是cluster里面的port

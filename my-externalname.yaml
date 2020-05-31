@@ -1,0 +1,7 @@
+apiVerion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: ExternalName
+  externalName: my-db.company.com
